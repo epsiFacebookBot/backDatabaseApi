@@ -12,13 +12,12 @@ public class UserService {
 	UserPersistence userPersistence;
 
 	public boolean saveUser(User user) {
-		userPersistence.saveUser(user);
-		return false;
+		return userPersistence.saveUser(user);
+		
 	}
 
 	public User getUserById(String id) {
-		userPersistence.getUserById(id);
-		return null;
+		return userPersistence.getUserById(id);
 	}
 	
 	

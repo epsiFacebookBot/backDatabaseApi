@@ -22,7 +22,14 @@ public class MessagesController {
 	}
 	
 	@RequestMapping(value ="/message/add", method = RequestMethod.POST)
-	public boolean saveMessage(@RequestParam Message message){
+	public boolean saveMessage(@RequestParam(value = "mid",required = true) String mid,@RequestParam(value = "text",required = true) String text,@RequestParam(value = "idFrom",required = true)String idFrom ,@RequestParam(value = "idTo",required = true) String idTo , @RequestParam(value = "attachmentType",required = false)String attachmentType , @RequestParam(value = "payload",required = false) String payload){
+		Message message = new Message(mid,text,idFrom,idTo);
+		if(attachmentType != null){
+			message.setAttachmentType(attachmentType);
+		}
+		if(payload != null){
+			message.setPayload(payload);
+		}
 		return messageService.saveMessage(message);
 	}
 }

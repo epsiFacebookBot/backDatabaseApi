@@ -1,10 +1,15 @@
 package webservice.backdata.persistence;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-
+import org.springframework.stereotype.Repository;
 import webservice.backdata.bean.User;
 
+@Repository
+@Configuration
+@PropertySource("classpath:/mongoConfig.properties")
 public class UserPersistence extends AbstractPersistence {
 
 	public boolean saveUser(User user) {

@@ -15,14 +15,14 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
-	@RequestMapping(value = "/User/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
 	public User getUserByMid(@PathVariable String id){
 		return userService.getUserById(id);
 	}
 	
-	@RequestMapping(value ="/User/add", method = RequestMethod.POST)
-	public boolean saveUser(@RequestParam User user){
-		return userService.saveUser(user);
+	@RequestMapping(value ="/user/add", method = RequestMethod.POST)
+	public boolean saveUser(@RequestParam(value = "id",required = true) String id,@RequestParam(value = "name",required = true) String name){
+		return userService.saveUser(new User(id,name));
 	}
 
 }

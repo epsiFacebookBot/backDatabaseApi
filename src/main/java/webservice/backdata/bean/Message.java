@@ -1,5 +1,8 @@
 package webservice.backdata.bean;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Message {
 	String mid;
 	String text;
@@ -8,6 +11,12 @@ public class Message {
 	String attachmentType;
 	String payload;
 	
+	public Message(String mid,String text,String idFrom,String idTo){
+		this.mid = mid;
+		this.text = text;
+		this.idFrom = idFrom;
+		this.idTo = idTo;
+	}
 	public String getMid() {
 		return mid;
 	}
