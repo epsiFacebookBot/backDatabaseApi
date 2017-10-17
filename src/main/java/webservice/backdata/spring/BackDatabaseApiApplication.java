@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("webservice.backdata")
 public class BackDatabaseApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BackDatabaseApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BackDatabaseApiApplication.class, args);
+    }
 }
