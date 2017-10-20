@@ -5,11 +5,17 @@ import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import webservice.backdata.bean.Message;
 import webservice.backdata.services.MessageService;
@@ -31,15 +37,13 @@ public class MessagesController {
     }
     
 
-    @RequestMapping(value = "/message/add", method = RequestMethod.POST)
-    public boolean saveMessage(@RequestParam(value = "mid", required = true) String mid, @RequestParam(value = "text", required = true) String text, @RequestParam(value = "idFrom", required = true) String idFrom, @RequestParam(value = "idTo", required = true) String idTo, @RequestParam(value = "attachmentType", required = false) String attachmentType, @RequestParam(value = "payload", required = false) String payload) throws HttpException, IOException {
-        Message message = new Message(mid, text, idFrom, idTo);
-        if (attachmentType != null) {
-            message.setAttachmentType(attachmentType);
-        }
-        if (payload != null) {
-            message.setPayload(payload);
-        }
-        return messageService.saveMessage(message);
+	@CrossOrigin
+    @RequestMapping(value = "/message/add", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public boolean saveMessage(@RequestBody JsonNode message) throws HttpException, IOException {
+       
+		Message messag = messageService.getMessageFromJson(message);
+        return messageService.saveMessage(messag);
     }
 }

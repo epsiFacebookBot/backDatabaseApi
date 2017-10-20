@@ -7,6 +7,10 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.google.gson.Gson;
+
 import webservice.backdata.bean.Message;
 import webservice.backdata.persistence.MessagePersistence;
 
@@ -38,7 +42,9 @@ public class MessageService {
         return messagePersistence.getMessageByMid(mid);
     }
     
-    
+    public Message getMessageFromJson(JsonNode json){
+    	return new Gson().fromJson(json.toString(),Message.class);
+    }
 
     public boolean saveMessage(Message message) throws HttpException, IOException {
         checkMessage(message);
