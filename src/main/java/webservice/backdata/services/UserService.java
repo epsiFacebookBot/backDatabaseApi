@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.google.gson.Gson;
+
 import webservice.backdata.bean.User;
 import webservice.backdata.persistence.UserPersistence;
 
@@ -51,6 +54,9 @@ public class UserService {
 	public List<User> getUsers() {		
 		return userPersistence.findUsers();
 	}
+	public static User getUserFromJson(JsonNode json){
+    	return new Gson().fromJson(json.toString(),User.class);
+    }
 
 
 }

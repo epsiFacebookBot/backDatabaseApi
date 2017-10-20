@@ -2,11 +2,10 @@ package webservice.backdata.services;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
@@ -15,7 +14,6 @@ import webservice.backdata.bean.Message;
 import webservice.backdata.persistence.MessagePersistence;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -42,23 +40,22 @@ public class MessageService {
         return messagePersistence.getMessageByMid(mid);
     }
     
-    public Message getMessageFromJson(JsonNode json){
+    public static Message getMessageFromJson(JsonNode json){
     	return new Gson().fromJson(json.toString(),Message.class);
     }
 
     public boolean saveMessage(Message message) throws HttpException, IOException {
         checkMessage(message);
 
-        // Add the message to the facebook discussion
-        RestTemplate restTemplate = new RestTemplate();
+        StringRequestEntity requestEntity = new StringRequestEntity(
+        	    new Gson().toJson(message),
+        	    "application/json",
+        	    "UTF-8");
         String token = "EAAWhdVgZA0nwBALALwNXQTk6vKsWsHJmH5PR9JjS7yuN4oWbYSE2auLJisSZBWELP9G7ZAUWk70XPPywyOqZCj2KMOiTOZCDNAjKZBEV01EpUc2joHVPMREmAUqPrQ4TFwyIleQmSZCov7kJsXYTlqJuUJUQDuWut3vIiW2fkMloAZDZD";
-        PostMethod post = new PostMethod("https://graph.facebook.com/v2.6/me/messages");
-		NameValuePair[] data = { };
+        PostMethod post = new PostMethod("https://graph.facebook.com/v2.6/me/messages");		
 		post.setRequestHeader("access_token", token);
-		post.setRequestBody(data);
-		String response;
+		post.setRequestEntity(requestEntity);
 		client.executeMethod(post);
-		response = post.getResponseBodyAsString();
         return messagePersistence.saveMessage(message);
     }
 
