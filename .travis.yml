@@ -1,3 +1,4 @@
 language: java
+sudo: enabled
 install:
   - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
