@@ -74,14 +74,14 @@ public class MessageService {
                 errorCount++;
                 error += "Text\n";
             }
-            if (message.getIdFrom() == null || message.getIdFrom().equals("")) {
+            /*if (message.getIdFrom() == null || message.getIdFrom().equals("")) {
                 errorCount++;
                 error += "IdFrom\n";
             }
             if (message.getIdTo() == null || message.getIdTo().equals("")) {
                 errorCount++;
                 error += "IdTo\n";
-            }
+            }*/
         }
         error = errorCount + error;
 
