@@ -1,5 +1,7 @@
 package webservice.backdata.persistence;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -24,5 +26,9 @@ public class UserPersistence extends AbstractPersistence {
         return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), User.class);
 
     }
+
+	public List<User> findUsers() {
+		return mongoTemplate.findAll(User.class);
+	}
 
 }

@@ -20,6 +20,8 @@ public class MessagePersistence extends AbstractPersistence {
         return mongoTemplate.findOne(new Query(Criteria.where("mid").is(mid)), Message.class);
     }
     
+    
+    
     public List<Message> getConversation(String idUser){
     	Query query = new Query();    
     	Criteria criteria = new Criteria();

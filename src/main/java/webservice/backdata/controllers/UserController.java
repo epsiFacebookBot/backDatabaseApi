@@ -1,5 +1,7 @@
 package webservice.backdata.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,11 @@ public class UserController {
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public User getUserByMid(@PathVariable String id) {
         return userService.getUserById(id);
+    }
+    
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public List<User> getUsers() {
+        return userService.getUsers();
     }
 
     @RequestMapping(value = "/user/add", method = RequestMethod.POST)

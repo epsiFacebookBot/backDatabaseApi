@@ -1,18 +1,34 @@
 package webservice.backdata.services;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import webservice.backdata.bean.Message;
 import webservice.backdata.persistence.MessagePersistence;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 
 @Service
 public class MessageService {
     @Autowired
     MessagePersistence messagePersistence;
+    private HttpClient client;
+
+	@PostConstruct
+	private void init() {
+
+		client = new HttpClient();
+		client.getParams().setParameter("http.useragent", "Test Client");
+
+	}
 
     public Message getMessageByMid(String mid) {
         if (mid == null || mid.equals("")) {
@@ -21,17 +37,22 @@ public class MessageService {
 
         return messagePersistence.getMessageByMid(mid);
     }
+    
+    
 
-    public boolean saveMessage(Message message) {
+    public boolean saveMessage(Message message) throws HttpException, IOException {
         checkMessage(message);
 
         // Add the message to the facebook discussion
         RestTemplate restTemplate = new RestTemplate();
         String token = "EAAWhdVgZA0nwBALALwNXQTk6vKsWsHJmH5PR9JjS7yuN4oWbYSE2auLJisSZBWELP9G7ZAUWk70XPPywyOqZCj2KMOiTOZCDNAjKZBEV01EpUc2joHVPMREmAUqPrQ4TFwyIleQmSZCov7kJsXYTlqJuUJUQDuWut3vIiW2fkMloAZDZD";
-        HashMap<String, String> vars = new HashMap<>();
-        vars.put("access_token", token);
-        Message messageFromFacebook = restTemplate.postForObject("https://graph.facebook.com/v2.6/me/messages", message, Message.class, vars);
-
+        PostMethod post = new PostMethod("https://graph.facebook.com/v2.6/me/messages");
+		NameValuePair[] data = { };
+		post.setRequestHeader("access_token", token);
+		post.setRequestBody(data);
+		String response;
+		client.executeMethod(post);
+		response = post.getResponseBodyAsString();
         return messagePersistence.saveMessage(message);
     }
 
@@ -74,5 +95,6 @@ public class MessageService {
 			return messagePersistence.getConversation(idUser);
 		}
 	}
+
 
 }
