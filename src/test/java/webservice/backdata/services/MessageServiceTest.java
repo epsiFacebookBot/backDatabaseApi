@@ -5,6 +5,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+
+import org.apache.commons.httpclient.HttpException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -31,7 +34,7 @@ public class MessageServiceTest {
 		verify(messagePersistence).getMessageByMid(mid);
 	}
 	@Test
-	public void testSaveMessage_shouldSaveMessage_whenMessageOk(){
+	public void testSaveMessage_shouldSaveMessage_whenMessageOk() throws HttpException, IOException{
 		Message message = createMessage();
 		when(messagePersistence.saveMessage(message)).thenReturn(true);
 		boolean reponse = messageService.saveMessage(message);
@@ -41,7 +44,7 @@ public class MessageServiceTest {
 	
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testSaveMessage_shouldNotSaveMessage_whenMessageNull(){
+	public void testSaveMessage_shouldNotSaveMessage_whenMessageNull() throws HttpException, IOException{
 		Message message = null;
 		when(messagePersistence.saveMessage(message)).thenReturn(true);
 		boolean reponse = messageService.saveMessage(message);
@@ -51,7 +54,7 @@ public class MessageServiceTest {
 	
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testSaveMessage_shouldNotSaveMessage_whenMidNull(){
+	public void testSaveMessage_shouldNotSaveMessage_whenMidNull() throws HttpException, IOException{
 		Message message = createMessage();
 		message.setMid(null);
 		when(messagePersistence.saveMessage(message)).thenReturn(true);
@@ -61,7 +64,7 @@ public class MessageServiceTest {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testSaveMessage_shouldNotSaveMessage_whenMidEmpty(){
+	public void testSaveMessage_shouldNotSaveMessage_whenMidEmpty() throws HttpException, IOException{
 		Message message = createMessage();
 		message.setMid("");
 		when(messagePersistence.saveMessage(message)).thenReturn(true);
@@ -71,7 +74,7 @@ public class MessageServiceTest {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testSaveMessage_shouldNotSaveMessage_whenTextNull(){
+	public void testSaveMessage_shouldNotSaveMessage_whenTextNull() throws HttpException, IOException{
 		Message message = createMessage();
 		message.setText(null);
 		when(messagePersistence.saveMessage(message)).thenReturn(true);
@@ -81,7 +84,7 @@ public class MessageServiceTest {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testSaveMessage_shouldNotSaveMessage_whenTextEmpty(){
+	public void testSaveMessage_shouldNotSaveMessage_whenTextEmpty() throws HttpException, IOException{
 		Message message = createMessage();
 		message.setText("");
 		when(messagePersistence.saveMessage(message)).thenReturn(true);
@@ -91,7 +94,7 @@ public class MessageServiceTest {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testSaveMessage_shouldNotSaveMessage_whenIdFromNull(){
+	public void testSaveMessage_shouldNotSaveMessage_whenIdFromNull() throws HttpException, IOException{
 		Message message = createMessage();
 		message.setIdFrom(null);
 		when(messagePersistence.saveMessage(message)).thenReturn(true);
@@ -101,7 +104,7 @@ public class MessageServiceTest {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testSaveMessage_shouldNotSaveMessage_whenIdFromEmpty(){
+	public void testSaveMessage_shouldNotSaveMessage_whenIdFromEmpty() throws HttpException, IOException{
 		Message message = createMessage();
 		message.setIdFrom("");
 		when(messagePersistence.saveMessage(message)).thenReturn(true);
@@ -110,7 +113,7 @@ public class MessageServiceTest {
 		verify(messagePersistence,times(0)).saveMessage(message);
 	}
 	@Test(expected=IllegalArgumentException.class)
-	public void testSaveMessage_shouldNotSaveMessage_whenIdToNull(){
+	public void testSaveMessage_shouldNotSaveMessage_whenIdToNull() throws HttpException, IOException{
 		Message message = createMessage();
 		message.setIdTo(null);
 		when(messagePersistence.saveMessage(message)).thenReturn(true);
@@ -119,7 +122,7 @@ public class MessageServiceTest {
 		verify(messagePersistence,times(0)).saveMessage(message);
 	}
 	@Test(expected=IllegalArgumentException.class)
-	public void testSaveMessage_shouldNotSaveMessage_whenIdToEmpty(){
+	public void testSaveMessage_shouldNotSaveMessage_whenIdToEmpty() throws HttpException, IOException{
 		Message message = createMessage();
 		message.setIdTo("");
 		when(messagePersistence.saveMessage(message)).thenReturn(true);
