@@ -7,6 +7,7 @@ import webservice.backdata.bean.Message;
 import webservice.backdata.persistence.MessagePersistence;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class MessageService {
@@ -65,5 +66,13 @@ public class MessageService {
         }
         return true;
     }
+
+	public List<Message> getConversation(String idUser) {
+		if(idUser == null || idUser == ""){
+			throw new IllegalArgumentException("idUser is nul or empty");
+		}else{
+			return messagePersistence.getConversation(idUser);
+		}
+	}
 
 }

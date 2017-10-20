@@ -1,5 +1,7 @@
 package webservice.backdata.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,11 @@ public class MessagesController {
     @RequestMapping(value = "/message/{mid}", method = RequestMethod.GET)
     public Message getMessageByMid(@PathVariable String mid) {
         return messageService.getMessageByMid(mid);
+    }
+    
+    @RequestMapping(value= "/conversation/{idUser}" , method = RequestMethod.GET)
+    public List<Message> getConversation(@PathVariable String idUser){
+    	return messageService.getConversation(idUser);
     }
 
     @RequestMapping(value = "/message/add", method = RequestMethod.POST)
