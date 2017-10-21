@@ -38,4 +38,12 @@ public class MessagePersistence extends AbstractPersistence {
         return false;
     }
 
+
+
+	public long getMessageCount() {
+		Query q = new Query();
+		q.addCriteria(new Criteria().all());
+		return mongoTemplate.count(q,Message.class);
+	}
+
 }

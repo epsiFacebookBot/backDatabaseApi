@@ -23,18 +23,24 @@ public class MessagesController {
 
     @Autowired
     MessageService messageService;
-
+    
+    @CrossOrigin
     @RequestMapping(value = "/message/{mid}", method = RequestMethod.GET)
     public Message getMessageByMid(@PathVariable String mid) {
         return messageService.getMessageByMid(mid);
     }
-    
+    @CrossOrigin
     @RequestMapping(value= "/conversations/{idUser}" , method = RequestMethod.GET)
     public List<Message> getConversation(@PathVariable String idUser){
     	return messageService.getConversation(idUser);
     }
     
-
+    @CrossOrigin
+    @RequestMapping(value= "/messageCount" , method = RequestMethod.GET)
+    public long getMessageCount(){
+    	return messageService.getMessageCount();
+    }
+    
 	@CrossOrigin
     @RequestMapping(value = "/message/add", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,

@@ -99,5 +99,9 @@ public class MessageService {
 		}
 	}
 
+	public long getMessageCount() {
+		return messagePersistence.getMessageCount();
+	}
+
 
 }
