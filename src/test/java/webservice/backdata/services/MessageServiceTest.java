@@ -6,6 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -16,6 +18,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import webservice.backdata.bean.Message;
 import webservice.backdata.persistence.MessagePersistence;
@@ -36,7 +42,17 @@ public class MessageServiceTest {
 		client.getParams().setParameter("http.useragent", "Test Client");
 
 	}
-
+	@Test
+	public void testGetMessageFromJson_shouldReturnAMessage() throws JsonProcessingException, IOException {
+		final String json = "{\"mid\":\"123\",\"text\":\"123\",	\"idFrom\":\"456\",	\"idTo\":\"478\"}";
+		JsonNode jsonNode = new ObjectMapper().readTree(json);
+		Message message =  MessageService.getMessageFromJson(jsonNode);
+		assertEquals(message.getMid(),"123");
+		assertEquals(message.getText(),"123");
+		assertEquals(message.getIdFrom(),"456");
+		assertEquals(message.getIdTo(),"478");
+		
+	}
 	@Test
 	public void testGetMessageByMid_shouldReturnAMessage() {
 		final String mid = "123";
@@ -45,6 +61,18 @@ public class MessageServiceTest {
 		Message reponse = messageService.getMessageByMid(mid);
 		assertEquals(reponse.getMid(), message.getMid());
 		verify(messagePersistence).getMessageByMid(mid);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetMessageByMid_shouldThrowException_whenNull() {
+		final String mid = null;
+		messageService.getMessageByMid(mid);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetMessageByMid_shouldThrowException_whenEmpty() {
+		final String mid = "";
+		messageService.getMessageByMid(mid);
 	}
 
 	@Test
@@ -104,8 +132,25 @@ public class MessageServiceTest {
 		assertEquals(reponse, true);
 		verify(messagePersistence, times(0)).saveMessage(message);
 	}
-
+	@Test
+	public void testGetConversation_shouldReturnAListMessage(){
+		List<Message> listMessage = new ArrayList<Message>();
+		listMessage.add(createMessage());
+		when(messagePersistence.getConversation("123")).thenReturn(listMessage);
+		messageService.getConversation("123");
+		assertTrue(listMessage != null);
+		assertTrue(listMessage.size() != 0);
+		verify(messagePersistence).getConversation("123");
+	}
 	@Test(expected = IllegalArgumentException.class)
+	public void testGetConversation_shouldThrowException_whenNull() {
+		messageService.getConversation(null);
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetConversation_shouldThrowException_whenEmpty() {
+		messageService.getConversation("");
+	}
+/*	@Test(expected = IllegalArgumentException.class)
 	public void testSaveMessage_shouldNotSaveMessage_whenIdFromNull() throws HttpException, IOException {
 		Message message = createMessage();
 		message.setIdFrom(null);
@@ -143,7 +188,8 @@ public class MessageServiceTest {
 		boolean reponse = messageService.saveMessage(message);
 		assertEquals(reponse, true);
 		verify(messagePersistence, times(0)).saveMessage(message);
-	}
+	}*/
+	
 
 	private Message createMessage() {
 		Message message = new Message("123", "Salut!", "942", "1357");
