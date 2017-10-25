@@ -1,0 +1,180 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+host: 'spokeek.fr:8090'
+paths:
+  /users:
+    get:
+      summary: Récupère les la liste des user
+      operationId: getUsers
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Liste de conversations
+          schema:
+            $ref: '#/definitions/ConversationIdList'
+  '/conversations/{idUser}':
+    get:
+      summary: Récupère une liste de messages
+      operationId: getConversationById
+      parameters:
+        - name: idUser
+          in: path
+          description: Id de la conversation
+          required: true
+          type: integer
+          format: int64
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Liste des id de conversations
+          schema:
+            $ref: '#/definitions/ConversationList'
+  '/message/{mid}':
+    get:
+      summary: get message by id
+      operationId: getMessageByMid
+      parameters:
+        - name: mid
+          in: path
+          description: Id du message
+          required: true
+          type: integer
+          format: int64
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: List message by id
+          schema:
+            $ref: '#/definitions/MessageById'
+  '/messageCount':
+    get:
+      summary: get message count
+      operationId: getMessageCount
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: List message by id
+          schema:
+            $ref: '#/definitions/MessageById'
+  '/user/{id}':
+    get:
+      summary: user by id
+      operationId: getUserByid
+      parameters:
+        - name: id
+          in: path
+          description: Id de l'user
+          required: true
+          type: integer
+          format: int64
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: List message by id
+          schema:
+            $ref: '#/definitions/UserById'
+            
+  '/users/add':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: The user to create.
+          schema:
+            type: object
+            properties:
+              userName:
+                type: string
+              firstName:
+                type: string
+              lastName:
+                type: string
+      responses:
+        '200':
+          description: create user
+          schema:
+            $ref: '#/definitions/UserAdd'
+            
+            
+  '/message/add':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: message
+          description: The message to create.
+          schema:
+            type: object
+            properties:
+              userName:
+                type: string
+              firstName:
+                type: string
+              lastName:
+                type: string
+      responses:
+        '200':
+          description: create message
+          schema:
+            $ref: '#/definitions/UserAdd'
+    
+definitions:
+  ConversationIdList:
+    type: array
+    items:
+      type: integer
+    example:
+      - 1
+      - 2
+      - 3
+  Conversation:
+    type: object
+    properties:
+      mid:
+        type: integer
+        example: 1
+      text:
+        type: string
+        example: Hello World
+      idFrom:
+        type: string
+      idTo:
+        type: string
+      attachmentType:
+        type: string
+      payload:
+        type: string
+  ConversationList:
+    type: array
+    items:
+      $ref: '#/definitions/Conversation'
+  MessageById:
+    type: object
+    items:
+      $ref: '#/definitions/MessageById'
+  MessageCount:
+    type: object
+    items:
+      $ref: '#/definitions/MessageCount'
+  MessageAdd:
+    type: object
+    items:
+      $ref: '#/definitions/MessageAdd'
+  UserAdd:
+    type: object
+    items:
+      $ref: '#/definitions/UserAdd'
+  UserById:
+    type: object
+    items:
+      $ref: '#/definitions/UserById'
